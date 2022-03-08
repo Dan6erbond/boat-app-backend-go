@@ -12,18 +12,18 @@ type AuthController struct {
 	AuthService services.AuthService
 }
 
-// @Summary Login
-// @Description Logs user into the system
-// @Tags auth
-// @Accept  json
-// @Produce  json
-// @Param   body  body  dto.LoginDTO  true  "Login"
-// @Success 200 {object} dto.LoginRequest
-// @Failure 400 {string} string
-// @Failure 404 {string} string
-// @Failure 500 {string} string
-// @Router /auth/login [post]
-func (c *AuthController) Post(ctx iris.Context) *dto.LoginResponse {
+// @Summary      Login
+// @Description  Logs user into the system
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body  body      dto.LoginRequest  true  "Login"
+// @Success      200   {object}  dto.LoginRequest
+// @Failure      400   {string}  string
+// @Failure      404   {string}  string
+// @Failure      500   {string}  string
+// @Router       /auth/login [post]
+func (c *AuthController) PostLogin(ctx iris.Context) *dto.LoginResponse {
 	var loginRequest dto.LoginRequest
 	err := ctx.ReadJSON(&loginRequest)
 	if err != nil {
@@ -38,18 +38,18 @@ func (c *AuthController) Post(ctx iris.Context) *dto.LoginResponse {
 	return loginResponse
 }
 
-// @Summary Sign up
-// @Description Sign up a new user
-// @Tags auth
-// @Accept  json
-// @Produce  json
-// @Param   body  body  dto.SignUpRequest true  "Sign up"
-// @Success 200 {object} dto.SignUpResponse
-// @Failure 400 {string} string
-// @Failure 404 {string} string
-// @Failure 500 {string} string
-// @Router /auth/signup [post]
-func (c *AuthController) SignUp(ctx iris.Context) *dto.SignUpResponse {
+// @Summary      Sign up
+// @Description  Sign up a new user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body  body      dto.SignUpRequest  true  "Sign up"
+// @Success      200   {object}  dto.SignUpResponse
+// @Failure      400   {string}  string
+// @Failure      404   {string}  string
+// @Failure      500   {string}  string
+// @Router       /auth/signup [post]
+func (c *AuthController) PostSignUp(ctx iris.Context) *dto.SignUpResponse {
 	var signUpRequest dto.SignUpRequest
 	err := ctx.ReadJSON(&signUpRequest)
 	if err != nil {

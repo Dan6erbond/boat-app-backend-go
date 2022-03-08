@@ -38,7 +38,7 @@ func main() {
 	docs.SwaggerInfo.Description = "This is a backend written for the Boat App in Golang/Iris."
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "localhost:8080"
-	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	swaggerUI := swagger.WrapHandler(
