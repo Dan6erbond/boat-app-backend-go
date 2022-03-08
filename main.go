@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/iris-contrib/swagger/v12"              // swagger middleware for Iris
 	"github.com/iris-contrib/swagger/v12/swaggerFiles" // swagger embed files
 	"github.com/joho/godotenv"
@@ -11,6 +13,7 @@ import (
 	"openwt.com/boat-app-backend/pkg/controllers"
 	"openwt.com/boat-app-backend/pkg/database"
 	"openwt.com/boat-app-backend/pkg/repositories"
+	"openwt.com/boat-app-backend/pkg/security"
 	"openwt.com/boat-app-backend/pkg/services"
 )
 
@@ -28,6 +31,8 @@ func init() {
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	app := iris.New()
+
+	jwtUtil := security.NewJWTUtil(os.Getenv("JWT_SECRET"))
 
 	docs.SwaggerInfo.Title = "Boat App"
 	docs.SwaggerInfo.Description = "This is a backend written for the Boat App in Golang/Iris."
@@ -54,6 +59,7 @@ func main() {
 	}
 
 	boatsRepository := repositories.NewBoatsRepository(db)
+	usersRepository := repositories.NewUsersRepository(db)
 
 	api := app.Party("/api")
 	{
@@ -62,6 +68,14 @@ func main() {
 			boatsMvc := mvc.New(boatsApi)
 			boatsMvc.Register(services.NewBoatsService(boatsRepository))
 			boatsMvc.Handle(new(controllers.BoatsController))
+		}
+
+		authApi := api.Party("/auth")
+		{
+			authMvc := mvc.New(authApi)
+			usersService := services.NewUsersService(usersRepository)
+			authMvc.Register(services.NewAuthService(usersService, jwtUtil))
+			authMvc.Handle(new(controllers.AuthController))
 		}
 	}
 

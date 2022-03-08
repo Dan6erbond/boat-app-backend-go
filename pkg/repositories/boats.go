@@ -1,13 +1,13 @@
 package repositories
 
 import (
-	"fmt"
+	"errors"
 
 	"gorm.io/gorm"
 	"openwt.com/boat-app-backend/pkg/models"
 )
 
-var ErrBoatNotFound error = fmt.Errorf("boat not found")
+var ErrBoatNotFound error = errors.New("boat not found")
 
 type BoatsRepository struct {
 	db *gorm.DB
