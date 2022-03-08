@@ -5,9 +5,9 @@ import (
 	"github.com/iris-contrib/swagger/v12/swaggerFiles" // swagger embed files
 	"github.com/joho/godotenv"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/middleware/cors"
 	"github.com/kataras/iris/v12/mvc"
 	"openwt.com/boat-app-backend/docs"
-	_ "openwt.com/boat-app-backend/docs"
 	"openwt.com/boat-app-backend/pkg/controllers"
 	"openwt.com/boat-app-backend/pkg/database"
 	"openwt.com/boat-app-backend/pkg/repositories"
@@ -64,6 +64,8 @@ func main() {
 			boatsMvc.Handle(new(controllers.BoatsController))
 		}
 	}
+
+	app.UseRouter(cors.New().AllowOrigin("*").Handler())
 
 	app.Listen(":8080")
 }
