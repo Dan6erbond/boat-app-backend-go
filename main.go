@@ -29,6 +29,10 @@ func init() {
 
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @securitydefinitions.apikey  JWT
+// @in                          header
+// @name                        Authorization
 func main() {
 	app := iris.New()
 
@@ -63,19 +67,28 @@ func main() {
 
 	api := app.Party("/api")
 	{
-		boatsApi := api.Party("/boats")
-		{
-			boatsMvc := mvc.New(boatsApi)
-			boatsMvc.Register(services.NewBoatsService(boatsRepository))
-			boatsMvc.Handle(new(controllers.BoatsController))
-		}
-
 		authApi := api.Party("/auth")
 		{
 			authMvc := mvc.New(authApi)
 			usersService := services.NewUsersService(usersRepository)
 			authMvc.Register(services.NewAuthService(usersService, jwtUtil))
 			authMvc.Handle(new(controllers.AuthController))
+		}
+
+		boatsApi := api.Party("/boats")
+		boatsApi.Use(jwtUtil.NewVerifyMiddleware())
+		{
+			boatsMvc := mvc.New(boatsApi)
+			boatsMvc.Register(services.NewBoatsService(boatsRepository))
+			boatsMvc.Handle(new(controllers.BoatsController))
+		}
+
+		usersApi := api.Party("/users")
+		usersApi.Use(jwtUtil.NewVerifyMiddleware())
+		{
+			usersMvc := mvc.New(usersApi)
+			usersMvc.Register(services.NewUsersService(usersRepository))
+			usersMvc.Handle(new(controllers.UsersController))
 		}
 	}
 

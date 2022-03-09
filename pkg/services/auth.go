@@ -39,7 +39,7 @@ func (s *authService) Login(username, password string) (*dto.LoginResponse, erro
 		return loginResponse, err
 	}
 	loginResponse = &dto.LoginResponse{
-		AccessToken: accessToken,
+		AccessToken: string(accessToken),
 	}
 	return loginResponse, nil
 }
@@ -70,7 +70,7 @@ func (s *authService) SignUp(username, password, firstName, lastName string) (*d
 	}
 	signUpResponse = &dto.SignUpResponse{
 		LoginResponse: dto.LoginResponse{
-			AccessToken: accessToken,
+			AccessToken: string(accessToken),
 		},
 		User: dto.UserDTO{
 			ID:        user.ID,

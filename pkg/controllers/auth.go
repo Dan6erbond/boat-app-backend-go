@@ -48,8 +48,8 @@ func (c *AuthController) PostLogin(ctx iris.Context) *dto.LoginResponse {
 // @Failure      400   {string}  string
 // @Failure      404   {string}  string
 // @Failure      500   {string}  string
-// @Router       /auth/signup [post]
-func (c *AuthController) PostSignUp(ctx iris.Context) *dto.SignUpResponse {
+// @Router       /auth/register [post]
+func (c *AuthController) PostRegister(ctx iris.Context) *dto.SignUpResponse {
 	var signUpRequest dto.SignUpRequest
 	err := ctx.ReadJSON(&signUpRequest)
 	if err != nil {
